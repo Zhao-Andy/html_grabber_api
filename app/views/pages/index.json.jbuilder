@@ -1,7 +1,3 @@
 json.array! @content.each do |element|
-  json.origin_url     element.origin_url
-  json.h1             element.h1
-  json.h2             element.h2
-  json.h3             element.h3
-  json.links          element.links
+  json.partial! 'content.json.jbuilder', element: element
 end
