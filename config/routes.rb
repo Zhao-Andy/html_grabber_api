@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root              to: 'pages#root'
   post '/parse',    to: 'pages#create'
   get '/index',     to: 'pages#index'
-  get '/show', to: 'pages#show'
+  get '/show',      to: 'pages#show'
 
   # Sessions
   post '/sessions', to: 'sessions#signup', constraints: CommitParamRouting.new(SessionsController::SIGNUP)
