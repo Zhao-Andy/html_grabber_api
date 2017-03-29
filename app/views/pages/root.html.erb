@@ -1,0 +1,17 @@
+<h1>HTML Grabber API</h1>
+<p>You can get the text from h1, h2, h3, and 'a' tags with this API!</p>
+
+<% unless current_user %>
+  <p>Simply signup or login:</p>
+  <%= form_for @session, url: '/sessions', method: :post do |f| %>
+    <%= f.text_field :email %>
+    <%= f.submit SessionsController::SIGNUP %>
+    <%= f.submit SessionsController::LOGIN %>
+  <% end %>
+<% else %>
+  <p>Currently logged in as <%= current_user.email %></p>
+  <p>Your API Key:<br><%= current_user.api_key %></p>
+  <%= form_tag '/logout', method: :delete do %>
+    <%= submit_tag "Logout" %>
+  <% end %>
+<% end %>

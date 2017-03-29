@@ -1,20 +1,23 @@
 class PagesController < ApplicationController
-  def parse
+  def root
+    @session = User.new
+  end
+
+  def create
     require 'open-uri'
     doc = Nokogiri::HTML(open(params[:url]))
-    content = Content.new(origin_url: params[:url])
-    doc.search('h1').each { |e| content.h1.push(e.text) }
-    doc.search('h2').each { |e| content.h2.push(e.text) }
-    doc.search('h3').each { |e| content.h3.push(e.text) }
-    doc.search('a').each { |e| content.links.push(e.attributes["href"].value) }
-    content.save if content.valid?
+    content = Content.new(origin_url: params[:url], user_id: @user.id)
+    content.parse_elements(doc)
+    content.save
+    redirect_to "/show.json/#{content.url}"
   end
 
   def index
-    @content = Content.all
-    render 'index.json.jbuilder'
+    @content = Content.where(user_id: @user.id)
   end
 
   def show
+    @content = Content.find_by(origin_url: params[:url], user_id: @user.id)
+    render json: { error: "You don't have that link!" }, status: 422 if @content.nil?
   end
 end
