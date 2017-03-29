@@ -18,5 +18,6 @@ class PagesController < ApplicationController
 
   def show
     @content = Content.find_by(origin_url: params[:url], user_id: @user.id)
+    render json: { error: "You don't have that link!" }, status: 422 if @content.nil?
   end
 end
